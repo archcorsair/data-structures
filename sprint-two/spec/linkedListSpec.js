@@ -52,4 +52,20 @@ describe('linkedList', function() {
   });
 
   // add more tests here to test the functionality of linkedList
+  it('should find the last node with contains', function() {
+    linkedList.addToTail(1);
+    linkedList.addToTail(2);
+    linkedList.addToTail(3);
+    expect(linkedList.contains(3)).to.equal(true);
+  });
+
+  it('should find the first node with contains', function() {
+    linkedList.addToTail(1);
+    linkedList.addToTail(2);
+    linkedList.addToTail(3);
+    expect(linkedList.contains(1)).to.equal(true);
+  });
+  it('should return undefined when removing head from empty list', function() {
+    expect(linkedList.removeHead()).to.equal(undefined);
+  });
 });
