@@ -27,6 +27,10 @@ describe('graph', function() {
     expect(graph.contains(2)).to.equal(false);
   });
 
+  it('should return undefined when attempting to remove a node that doesn\'t exist', function () {
+    expect(graph.removeNode(1)).to.equal(undefined);
+  });
+
   it('should create edges between two nodes', function() {
     graph.addNode(2);
     graph.addNode(1);
@@ -43,6 +47,15 @@ describe('graph', function() {
     expect(graph.hasEdge(4, 5)).to.equal(true);
     graph.removeEdge(5, 4);
     expect(graph.hasEdge(4, 5)).to.equal(false);
+  });
+
+  it('should handle removing edges that don\'t exist', function() {
+    var testFunction = function () {
+      graph.removeEdge(4, 5);
+    };
+    graph.addNode(4);
+    graph.addNode(5);
+    expect(testFunction).to.not.throw(Error);
   });
 
   it('should remove edges between nodes when a node is removed', function() {
