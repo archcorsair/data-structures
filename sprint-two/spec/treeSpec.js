@@ -18,7 +18,14 @@ describe('tree', function() {
 
   it('should return true for a value that the tree contains', function() {
     tree.addChild(5);
+    //debugger;
     expect(tree.contains(5)).to.equal(true);
+  });
+
+  it('should return true for a value that the tree contains far down', function() {
+    tree.addChild(5);
+    tree.children[0].addChild(6);
+    expect(tree.contains(6)).to.equal(true);
   });
 
   it('should return false for a value that was not added', function() {
