@@ -19,7 +19,6 @@ treeMethods.contains = function(target) {
     found = false;
   } else {
     found = arguments[1];
-    if (found) { return true; }
   }
   // Look over the children
   this.children.forEach(function(child) {
