@@ -12,6 +12,8 @@ var GraphNode = function(value) {
 
 // Add a node to the graph, passing in the node's value.
 Graph.prototype.addNode = function(value) {
+  // returns true if adding node is successful,
+  // returns false if adding node fails
   var newNode = new GraphNode(value);
   var key = JSON.stringify(value);
   this.nodes[key] = newNode;
@@ -49,11 +51,23 @@ Graph.prototype.addEdge = function(fromNodeValue, toNodeValue) {
 };
 
 // Remove an edge between any two specified (by value) nodes.
-Graph.prototype.removeEdge = function(fromNode, toNode) {
+Graph.prototype.removeEdge = function(fromNodeValue, toNodeValue) {
+  var fromNode = this.getNode(fromNodeValue);
+  var toNode = this.getNode(toNodeValue);  
+
+  toNode.edges.splice(toNode.edges.indexOf(fromNode), 1);
+  fromNode.edges.splice(toNode.edges.indexOf(toNode), 1);
 };
 
 // Pass in a callback which will be executed on each node of the graph.
 Graph.prototype.forEachNode = function(cb) {
+
+  // look over each node
+
+  for (var key in this.nodes) {
+    // do cb with each node
+    cb(this.nodes[key].value);
+  }
 };
 
 Graph.prototype.getNode = function (value) {
