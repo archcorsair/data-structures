@@ -17,7 +17,7 @@ HashTable.prototype.insert = function(k, v) {
   // put the whole thing back in the bucket
   this._storage.set(index, bucketContents);
   // is the 75% rule exceeded??? if it is, we must grow.
-  if (this._occupied / this._limit >= 0.60 && arguments[2] !== 'growing') {
+  if (this._occupied / this._limit >= 0.61 && arguments[2] !== 'growing') {
     console.log('I am growing');
     console.log(arguments[2]);
     this._storage = this._grow();
@@ -56,9 +56,10 @@ HashTable.prototype._grow = function() {
       this.insert(key, value, 'growing');
     }
   }.bind(this));
-  debugger;
+  //debugger;
   // losing this._storage once this function exits
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  return this._storage;
 };
 
 
@@ -66,5 +67,3 @@ HashTable.prototype._grow = function() {
 /*
  * Complexity: What is the time complexity of the above functions?
  */
-
-
