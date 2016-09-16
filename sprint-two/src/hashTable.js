@@ -8,14 +8,31 @@ var HashTable = function() {
 
 HashTable.prototype.insert = function(k, v) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  var bucketContents = this._storage.get(index) || {};
-  // Increase occupied count for every insert operation
-  this._occupied++;
+  // If nothing at index, create empty bucket, otherwise get bucket.
+  var bucket = this._storage.get(index) || [];
+  // Look over items in the bucket
+  var found = false;
+  bucket.forEach(function(item, index) {
+    // if key exists
+    if (item[0] === k) {
+      found = true;
+      item[1] = v;
+    }
+  });
+  // if key doesn't exist
+  if (!found) {
+    // add key and its coresponding value
+    var item = [];
+    item[0] = k;
+    item[1] = v;
+    bucket.push(item);
+    this._occupied++;
+  }
 
-  // add my new value to the bucket
-  bucketContents[k] = v;
-  // put the whole thing back in the bucket
-  this._storage.set(index, bucketContents);
+  this._storage.set(index, bucket);
+
+  // Embedded grow check
+
   // is the 75% rule exceeded??? if it is, we must grow.
   if (this._occupied / this._limit >= 0.75) {
     this._grow();
@@ -24,17 +41,49 @@ HashTable.prototype.insert = function(k, v) {
 
 HashTable.prototype.retrieve = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  // get whats in the bucket
-  var bucketContents = this._storage.get(index);
-  // return the value of the input key
-  return bucketContents[k];
+  // k is 'David'
+  // grab the bucket
+  var bucket = this._storage.get(index);
+  if (!bucket) {
+    return undefined;
+  }
+
+  // go inside bucket
+  return bucket.reduce(function(memo, item) {
+    // look for key
+    if (item[0] === k) {
+      memo = item[1];
+    }
+    return memo;
+  }, undefined);
 };
 
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  // get whats in the bucket already
-  var bucketContents = this._storage.get(index);
-  delete bucketContents[k];
+  // grab the bucket
+  var bucket = this._storage.get(index);
+  if (!bucket) { return undefined; }
+  // check that the thing actually is there
+  if (this.retrieve(k) !== undefined) {
+    // Get index of our key
+    var toDeleteIndex = bucket.reduce(function(memo, item, index) {
+      if (item[0] === k) {
+        memo = index;
+      }
+      return memo;
+    }, -1);
+
+    // if negative 1 comes out, its not there
+    if (toDeleteIndex === -1) {
+      return undefined;
+    } else {
+      // return value that we wanted to delete one last time
+      return bucket.splice(toDeleteIndex, 1)[0][1];
+    }
+  } else {
+    return undefined;
+  }
+
 };
 
 HashTable.prototype._grow = function() {
