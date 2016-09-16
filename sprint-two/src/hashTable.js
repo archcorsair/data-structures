@@ -31,11 +31,9 @@ HashTable.prototype.insert = function(k, v) {
 
   this._storage.set(index, bucket);
 
-  // Embedded grow check
-
   // is the 75% rule exceeded??? if it is, we must grow.
   if (this._occupied / this._limit >= 0.75) {
-    this._grow();
+    this._resize('grow');
   }
 };
 
@@ -77,18 +75,30 @@ HashTable.prototype.remove = function(k) {
     if (toDeleteIndex === -1) {
       return undefined;
     } else {
+      // taking something out of the hash table --- deal with
+      // occupied and with the possibility we might need to shrink
+      this._occupied--;
       // return value that we wanted to delete one last time
-      return bucket.splice(toDeleteIndex, 1)[0][1];
+      var result = bucket.splice(toDeleteIndex, 1)[0][1];
+      // do we now have less than 25% usage? we need to shrink
+      if (this._occupied / this._limit < 0.25) {
+        this._resize('shrink');
+      }
+      // return the value we pulled out
+      return result;
     }
   } else {
     return undefined;
   }
-
 };
 
-HashTable.prototype._grow = function() {
+HashTable.prototype._resize = function(growOrShrink) {
   // need to resize when 75% of buckets are occupied
-  this._limit = this._limit * 2;
+  if (growOrShrink === 'grow') {
+    this._limit *= 2;
+  } else if (growOrShrink === 'shrink') {
+    this._limit /= 2;
+  }
 
   // make a new storage that's double the size of the old storage
   var oldStorage = this._storage;
@@ -98,13 +108,13 @@ HashTable.prototype._grow = function() {
 
   // go through old storage -- look in each bucket
   oldStorage.each(function(bucket) {
-    for (var key in bucket) {
-      var value = bucket[key];
-      this.insert(key, value);
+    if (bucket) {
+      bucket.forEach(function(item) {
+        this.insert(item[0], item[1]);
+      }.bind(this));
     }
   }.bind(this));
 };
-
 
 
 /*
