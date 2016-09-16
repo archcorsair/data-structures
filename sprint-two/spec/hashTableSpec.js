@@ -6,7 +6,7 @@ describe('hashTable', function() {
   beforeEach(function() {
     hashTable = new HashTable();
   });
-/*
+
   it('should have methods named "insert", "remove", and "retrieve', function() {
     expect(hashTable.insert).to.be.a('function');
     expect(hashTable.remove).to.be.a('function');
@@ -35,6 +35,19 @@ describe('hashTable', function() {
     expect(hashTable.retrieve('Steven')).to.equal(undefined);
   });
 
+  it('should not contain values added deep in the bucket then removed', function() {
+    hashTable.insert('George', 'Castanza');
+    hashTable.insert('John', 'Jingleberry');
+    hashTable.remove('John');
+    expect(hashTable.retrieve('John')).to.equal(undefined);
+  });
+
+  it('should return the value associated with the key it is removing', function(){
+    hashTable.insert('George', 'Castanza');
+    var removed = hashTable.remove('George');
+    expect(removed).to.equal('Castanza');
+  });
+
   it('should handle hash function collisions', function() {
     var v1 = 'val1';
     var v2 = 'val2';
@@ -59,15 +72,12 @@ describe('hashTable', function() {
     expect(hashTable.retrieve(v2)).to.equal(undefined);
     window.getIndexBelowMaxForKey = oldHashFunction;
   });
-*/
+
   it ('should double in size when needed', function() {
     _.each(people, function(person) {
       var firstName = person[0];
       var lastName = person[1];
       hashTable.insert(firstName, lastName);
-      console.log(firstName, lastName);
-      if (firstName === 'Brendan') {debugger;}
-  
       expect(hashTable.retrieve(firstName)).to.equal(lastName);
     });
     expect(hashTable._limit).to.equal(16);
