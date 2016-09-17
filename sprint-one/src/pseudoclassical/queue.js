@@ -21,3 +21,7 @@ Queue.prototype.dequeue = function() {
     return result;
   }
 };
+
+// Performance Profile:
+// 100k instansiations
+// 6 ms

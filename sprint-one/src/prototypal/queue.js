@@ -26,4 +26,6 @@ var queueMethods = {
   }
 };
 
-
+// Performance Profile:
+// 100k instansiations
+// 12 ms

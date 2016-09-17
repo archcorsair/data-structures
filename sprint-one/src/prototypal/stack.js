@@ -26,3 +26,6 @@ var stackMethods = {
 };
 
 
+// Performance Profile:
+// 100k instansiations
+// 20 ms

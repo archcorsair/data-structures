@@ -31,4 +31,6 @@ var extend = function(target, source) {
   }
 };
 
-
+// Performance Profile:
+// 100k instansiations
+// 34 ms

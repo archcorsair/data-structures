@@ -29,3 +29,7 @@ var Queue = function() {
 
   return someInstance;
 };
+
+// Performance Profile:
+// 100k instansiations
+// 120 ms

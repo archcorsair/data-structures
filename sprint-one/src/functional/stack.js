@@ -17,7 +17,7 @@ var Stack = function() {
       counter--;
       var result = storage[counter];
       delete storage.counter;
-      return result; 
+      return result;
     } else {
       return undefined;
     }
@@ -29,3 +29,8 @@ var Stack = function() {
 
   return someInstance;
 };
+
+
+// Performance Profile:
+// 100k instansiations
+// 112 ms

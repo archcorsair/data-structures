@@ -23,7 +23,7 @@ var queueMethods = {
       var result = this.values[this.firstIndex];
       delete this.values[this.firstIndex];
       this.firstIndex++;
-      return result;   
+      return result;
     }
   }
 };
@@ -34,3 +34,6 @@ var extend = function(target, source) {
   }
 };
 
+// Performance Profile:
+// 100k instansiations
+// 19 ms
