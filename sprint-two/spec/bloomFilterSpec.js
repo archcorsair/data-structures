@@ -58,6 +58,19 @@ describe('Bloom Filter', function(){
     it('add should introduce "true" values into storage', function() {
       bloomFilter.add('key');
       // Look over all values in storage - see if any are true
+      expect(bloomFilter._storage.some(function(cell){
+        return cell;
+      })).to.equal(true);
+    });
+
+    it('checking an existing key returns true', function() {
+      bloomFilter.add('key');
+      expect(bloomFilter.check('key')).to.equal(true);
+    });
+
+    it('checking a non-existant key returns false (at first)', function() {
+      bloomFilter.add('key');
+      expect(bloomFilter.check('somethingelse')).to.equal(false);
     });
 
   });
