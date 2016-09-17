@@ -38,9 +38,16 @@ var BloomFilter = function(k, max) {
 }
 
 BloomFilter.prototype.add = function(key) {
-  
+  this._hashFunctions.forEach(function(hashFunction){
+    this._storage[hashFunction(key)] = true;
+  }.bind(this));
 };
 
 BloomFilter.prototype.check = function(key) {
-
+  return this._hashFunctions.reduce(function(memo, hashFunction) {
+    if (!this._storage[hashFunction(key)]) {
+      memo = false;
+    }
+    return memo;
+  }.bind(this), true);
 };
