@@ -51,3 +51,30 @@ BloomFilter.prototype.check = function(key) {
     return memo;
   }.bind(this), true);
 };
+
+BloomFilter.prototype.trial = function(numKeysInFilter, numTotalKeys) {
+  var generateRandomWholeNumber = function(upperLimit) {
+    return Math.floor(Math.random() * upperLimit);
+  };
+  // Make total keys
+  const totalKeys = [];
+  for (let i = 0; i < numTotalKeys; i++) {
+    totalKeys.push(String(generateRandomWholeNumber(1000000)));
+  }
+  const filterKeys = totalKeys.slice(0, numKeysInFilter);
+  filterKeys.forEach(function(key) {
+    this.add(key);
+  }.bind(this));
+
+  var falsePositives = 0;
+  debugger;
+  totalKeys.forEach(function(key) {
+    if (this.check(key)) {
+      if (filterKeys.indexOf(key) === -1) {
+        falsePositives++;
+      }
+    }
+  }.bind(this));
+
+  return falsePositives;
+};
