@@ -42,7 +42,7 @@ describe('hashTable', function() {
     expect(hashTable.retrieve('John')).to.equal(undefined);
   });
 
-  it('should return the value associated with the key it is removing', function(){
+  it('should return the value associated with the key it is removing', function() {
     hashTable.insert('George', 'Castanza');
     var removed = hashTable.remove('George');
     expect(removed).to.equal('Castanza');

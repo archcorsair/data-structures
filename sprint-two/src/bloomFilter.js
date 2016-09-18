@@ -9,7 +9,7 @@ var HashFunctionGenerator = function(k, max) {
       hash = Math.abs(hash);
     }
     return hash % max;
-  }
+  };
 };
 
 // Hash Function Generator
@@ -35,10 +35,10 @@ var BloomFilter = function(k, max) {
   var hashMaker = new HashFunctionGenerator(this.k, this.max);
   this._hashFunctions = hashMaker.generate();
 
-}
+};
 
 BloomFilter.prototype.add = function(key) {
-  this._hashFunctions.forEach(function(hashFunction){
+  this._hashFunctions.forEach(function(hashFunction) {
     this._storage[hashFunction(key)] = true;
   }.bind(this));
 };
