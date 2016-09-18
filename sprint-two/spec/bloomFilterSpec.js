@@ -73,8 +73,23 @@ describe('Bloom Filter', function(){
       expect(bloomFilter.check('somethingelse')).to.equal(false);
     });
 
+
   });
 
+  describe('False positive trials', function() {
+    var bloomFilter;
+    var numKeysInFilter;
+    var numTotalKeys;
+    beforeEach(function() {
+      var k = 3;
+      var max = 18;
+      bloomFilter = new BloomFilter(k, max);
+    });
 
+    it('should return the number of false positives', function() {
+      expect(bloomFilter.trial(10, 20)).to.be.within(0,20);
+    });
+
+  });
 
 });
